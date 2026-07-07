@@ -31,6 +31,7 @@ googleapis-common-protos==1.75.0
 greenlet==3.5.3
 grpcio==1.81.1
 grpcio-status==1.71.2
+groq==1.5.0
 h11==0.16.0
 hf-xet==1.5.1
 httpcore==1.0.9
@@ -117,3 +118,4 @@ websockets==15.0.1
 xxhash==3.8.0
 yarl==1.24.2
 zstandard==0.25.0
+pandas==3.0.3
