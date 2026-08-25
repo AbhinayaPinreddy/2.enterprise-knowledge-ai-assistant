@@ -14,12 +14,14 @@ export const deleteDocument = async (id) => {
 
 // Download
 export const downloadDocument = (id) => {
-    window.open(`http://127.0.0.1:8000/documents/download/${id}`, "_blank");
+    window.open(
+        `${import.meta.env.VITE_API_URL}/documents/download/${id}`,
+        "_blank"
+    );
 };
 
 // Upload Document
 export const uploadDocument = async (formData) => {
-
     const response = await api.post(
         "/documents/upload",
         formData,
