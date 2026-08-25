@@ -5,13 +5,12 @@ def get_model():
     global _model
 
     if _model is None:
-        print("Loading embedding model...")
+        print("Loading lightweight embedding model...")
 
-        from sentence_transformers import SentenceTransformer
+        from fastembed import TextEmbedding
 
-        _model = SentenceTransformer(
-            "all-MiniLM-L6-v2",
-            device="cpu"
+        _model = TextEmbedding(
+            model_name="BAAI/bge-small-en-v1.5"
         )
 
         print("Embedding model loaded.")
@@ -25,11 +24,6 @@ def generate_embeddings(chunks):
 
     texts = [chunk["text"] for chunk in chunks]
 
-    embeddings = model.encode(
-        texts,
-        convert_to_numpy=True,
-        show_progress_bar=False,
-        batch_size=16
-    )
+    embeddings = list(model.embed(texts))
 
     return embeddings
