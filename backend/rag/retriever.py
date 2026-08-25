@@ -1,6 +1,6 @@
 import numpy as np
 
-from rag.embeddings import model
+from rag.embeddings import get_model
 from rag.vector_store import VectorStore
 
 from database import SessionLocal
@@ -14,6 +14,9 @@ def retrieve(query, category, top_k=10):
     db = SessionLocal()
 
     try:
+
+        # Load the embedding model only when retrieval is needed
+        model = get_model()
 
         query_embedding = model.encode(
             [query],
@@ -43,23 +46,22 @@ def retrieve(query, category, top_k=10):
                 Document.id == chunk.document_id
             ).first()
 
+            if document is None:
+                continue
+
             if category is not None:
 
-                if document.category .lower()!= category.lower():
+                if document.category.lower() != category.lower():
                     continue
 
             results.append({
-
                 "score": float(distance),
-
                 "text": chunk.text,
                 "document_id": document.id,
-
                 "document": document.filename,
-
                 "page": chunk.page
-
             })
+
         for chunk in results:
             print(chunk["page"])
             print(chunk["text"][:200])
@@ -68,5 +70,4 @@ def retrieve(query, category, top_k=10):
         return results
 
     finally:
-
         db.close()
